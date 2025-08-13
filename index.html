@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Undangan Online</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      text-align: center;
+      padding: 20px;
+      /* Background full layar */
+      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5dWnQEh2MRnwXEXfFbLCO2AErx04HhSRkdGSkRSBNn1LOIfK1PmbV7Zw&s=10') no-repeat center center fixed;
+      background-size: cover;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.85); /* putih transparan */
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .photo {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    h4 {
+      margin: 10px 0 5px;
+    }
+    .name {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #db2777;
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #db2777;
+      color: white;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Foto Persegi -->
+    <div class="photo">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVZtgolUiaZi4baArvs4XDVTj624AJJrMIuprWpiYyavaceZQNv9ERo62u&s=10" alt="Foto Pasangan">
+    </div>
+
+    <!-- Sapaan -->
+    <h4>Kepada Yth. Bapak/Ibu/Saudara/i</h4>
+    <div class="name" id="guestName">Nama Tamu</div>
+
+    <!-- Tombol -->
+    <a href="konten.html" class="btn" onclick="localStorage.setItem('playMusic', 'true')">Buka Undangan</a>
+  </div>
+
+  <script>
+    // Ambil nama dari URL (contoh: index.html?to=Rina)
+    const params = new URLSearchParams(window.location.search);
+    const to = params.get('to');
+    if (to) {
+      document.getElementById('guestName').textContent = to;
+    }
+  </script>
+</body>
+</html>
