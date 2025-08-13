@@ -13,18 +13,16 @@
       background-color: #fff0f5;
       overflow-x: hidden;
     }
-
     section {
       padding: 20px;
       opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 1s ease-out, transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
     }
     section.show {
       opacity: 1;
       transform: translateY(0);
     }
-
     .bismillah {
       font-size: 1.8em;
       margin-bottom: 10px;
@@ -35,7 +33,6 @@
       font-weight: 600;
       margin-bottom: 15px;
     }
-
     .square-photo {
       width: 220px;
       height: 220px;
@@ -50,7 +47,6 @@
       height: 100%;
       object-fit: cover;
     }
-
     .circle-photo {
       width: 150px;
       height: 150px;
@@ -65,21 +61,18 @@
       height: 100%;
       object-fit: cover;
     }
-
     .names {
       font-family: 'Great Vibes', cursive;
       font-size: 2.2em;
       margin: 10px 0;
       color: #a0522d;
     }
-
     .countdown {
       font-size: 1.2em;
       margin: 20px 0;
       font-weight: bold;
       color: #db2777;
     }
-
     .yg-berbahagia {
       margin-top: 30px;
     }
@@ -93,8 +86,6 @@
     .parent-card {
       max-width: 200px;
     }
-
-    /* Extra sections styling */
     .event-card {
       background: #fff;
       border-radius: 12px;
@@ -120,8 +111,6 @@
       margin-top: 10px;
       border-radius: 10px;
     }
-
-    /* Gallery */
     .gallery-main {
       width: 100%;
       height: 250px;
@@ -151,8 +140,6 @@
     .gallery-thumbs img.active {
       border-color: #db2777;
     }
-
-    /* Form */
     form input, form textarea, form select {
       width: 90%;
       padding: 8px;
@@ -236,13 +223,6 @@
     <div class="gallery-thumbs" id="gallery-thumbs">
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMCwTRen4q34iwGWdJQv43wqJsv8z9dmG_7Q&usqp=CAU" class="active" onclick="changeGallery(this)">
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSU2wGDqJN80oJQ9Phk1IA_1eTl5Kq9AJaZDLtHraBxMsIe_ejWZSXa7it&s=10" onclick="changeGallery(this)">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOGhtn5hnLzPjsmM4Mlf3IUlfnm-vpbJKqBA&usqp=CAU" onclick="changeGallery(this)">
-      ‎<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWPw0qZuquPZKb9mZJNUfYsJCej410iHKwNg&usqp=CAU" onclick="changeGallery(this)">
-      ‎<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRcS_H9GEDShBN3MknGC4APIp4G9ynarrrOA&usqp=CAU" onclick="changeGallery(this)">
-      ‎<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEKNqXsO0Ue7lwj2_0Ivk09B9SRFuuQZ4_Sg&usqp=CAU" onclick="changeGallery(this)">
-      ‎<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1e9fxDpvStwJ_w7Hq08smyxR5LF5-LR3jwg&usqp=CAU" onclick="changeGallery(this)">
-      ‎<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKI-BY8PrBtazyZYjIoH4K_bp-YzWX7uNSbQ&usqp=CAU" onclick="changeGallery(this)">
-      ‎<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMvl0dpajCnKb1goB_9f2ExjtzOFU4XmOOow&usqp=CAU" onclick="changeGallery(this)">
     </div>
   </section>
 
@@ -277,80 +257,82 @@
     <div class="square-photo"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2gyMZKFttZ82FQ56gaCX9ijuo2CpIVdQgRQ&usqp=CAU" alt="Penutup"></div>
     <p>Kehadiran dan doa restu Bapak/Ibu/Saudara/i sangat kami harapkan untuk menyempurnakan kebahagiaan kami. Atas kehadiran dan doa restu, kami ucapkan terima kasih.</p>
   </section>
+
   <!-- Musik -->
-<audio id="bg-music" loop autoplay>
-  <source src="aty.mp3" type="audio/mpeg">
-</audio>
+  <audio id="bg-music" loop>
+    <source src="aty.mp3" type="audio/mpeg">
+  </audio>
 
 <script>
-  // Pastikan musik mulai otomatis saat halaman dibuka
+  // Musik Autoplay
   window.addEventListener("load", () => {
     const music = document.getElementById("bg-music");
-    music.play().catch(() => {
-      // Kalau autoplay diblokir, jalanin pas user klik layar
+    const shouldPlay = localStorage.getItem("playMusic");
+
+    if (shouldPlay === "true") {
+      music.play().catch(() => {
+        document.body.addEventListener("click", () => music.play(), { once: true });
+      });
+      localStorage.removeItem("playMusic");
+    } else {
       document.body.addEventListener("click", () => music.play(), { once: true });
+    }
+  });
+
+  // Countdown
+  const targetDate = new Date("2025-12-31T00:00:00").getTime();
+  const countdownEl = document.getElementById("countdown");
+  setInterval(() => {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    countdownEl.textContent = `${days} Hari ${hours} Jam ${minutes} Menit ${seconds} Detik`;
+  }, 1000);
+
+  // Animasi Scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+        observer.unobserve(entry.target);
+      }
     });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+
+  // Toggle Map
+  function toggleMap(e) {
+    e.preventDefault();
+    const map = document.getElementById("map");
+    map.style.display = map.style.display === "none" ? "block" : "none";
+  }
+
+  // Toggle Gift
+  function toggleGift(e) {
+    e.preventDefault();
+    const gift = document.getElementById("gift");
+    gift.style.display = gift.style.display === "none" ? "block" : "none";
+  }
+
+  // Ganti Galeri
+  function changeGallery(el) {
+    document.querySelectorAll('#gallery-thumbs img').forEach(img => img.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('gallery-main').querySelector('img').src = el.src;
+  }
+
+  // WA Form
+  document.getElementById("wa-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const nama = document.getElementById("nama").value;
+    const pesan = document.getElementById("pesan").value;
+    const hadir = document.getElementById("kehadiran").value;
+    const waURL = `https://wa.me/6281234567890?text=Nama:%20${encodeURIComponent(nama)}%0APesan:%20${encodeURIComponent(pesan)}%0AKehadiran:%20${encodeURIComponent(hadir)}`;
+    window.open(waURL, "_blank");
   });
 </script>
-
-  <script>
-    // Countdown
-    const targetDate = new Date("2025-12-31T00:00:00").getTime();
-    const countdownEl = document.getElementById("countdown");
-    setInterval(() => {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      countdownEl.textContent = `${days} Hari ${hours} Jam ${minutes} Menit ${seconds} Detik`;
-    }, 1000);
-
-    // Animasi scroll
-    const sections = document.querySelectorAll('section');
-    const showOnScroll = () => {
-      const triggerBottom = window.innerHeight * 0.85;
-      sections.forEach((sec, i) => {
-        const boxTop = sec.getBoundingClientRect().top;
-        if (boxTop < triggerBottom) {
-          setTimeout(() => sec.classList.add('show'), i * 250);
-        }
-      });
-    };
-    window.addEventListener('scroll', showOnScroll);
-    window.addEventListener('load', showOnScroll);
-
-    // Map toggle
-    function toggleMap(e) {
-      e.preventDefault();
-      document.getElementById("map").style.display =
-        document.getElementById("map").style.display === "none" ? "block" : "none";
-    }
-
-    // Gift toggle
-    function toggleGift(e) {
-      e.preventDefault();
-      document.getElementById("gift").style.display =
-        document.getElementById("gift").style.display === "none" ? "block" : "none";
-    }
-
-    // Gallery change
-    function changeGallery(el) {
-      document.querySelectorAll('#gallery-thumbs img').forEach(img => img.classList.remove('active'));
-      el.classList.add('active');
-      document.getElementById('gallery-main').querySelector('img').src = el.src;
-    }
-
-    // WA form
-    document.getElementById("wa-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const nama = document.getElementById("nama").value;
-      const pesan = document.getElementById("pesan").value;
-      const hadir = document.getElementById("kehadiran").value;
-      const waURL = `https://wa.me/6281234567890?text=Nama:%20${encodeURIComponent(nama)}%0APesan:%20${encodeURIComponent(pesan)}%0AKehadiran:%20${encodeURIComponent(hadir)}`;
-      window.open(waURL, "_blank");
-    });
-  </script>
 </body>
 </html>
